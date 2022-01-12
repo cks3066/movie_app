@@ -1,31 +1,21 @@
 import React from "react";
 import "./App.css";
 
-const App = (props) => {
-  const [counter, setCounter] = React.useState(0);
-  const [keyword, setKeyword] = React.useState("");
-  const onClick = () => {
-    setCounter((prev) => prev + 1);
-  };
-  const onChange = (event) => setKeyword(event.target.value);
-  console.log("i run always");
-  const iRunOnlyOnce = () => {
-    console.log("i run only once");
-  };
-  React.useEffect(iRunOnlyOnce, []);
+const Hello = () => {
   React.useEffect(() => {
-    console.log("Search For");
-  }, [keyword]);
+    console.log("created :)");
+    return () => console.log("destroyed :(");
+  }, []);
+  return <h1>Hello</h1>;
+};
+
+const App = (props) => {
+  const [showing, setShowing] = React.useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search Here"
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 };

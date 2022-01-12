@@ -4,18 +4,24 @@ import "./App.css";
 const App = (props) => {
   const [toDo, setToDo] = React.useState("");
   const [toDos, setToDos] = React.useState([]);
-
-  const onChange = (event) => setToDo(event.target.value);
-  const onSubmit = (event) => {
-    event.preventDefault();
+  const onChange = (e) => setToDo(e.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (toDo === "") return;
+    setToDos((currentArray) => [toDo, ...currentArray]);
     setToDo("");
-    setToDos([...toDos, toDo]);
-    setToDos((currentArray) => [...toDos, toDo]);
-    console.log(toDos);
+  };
+  const deleteClick = (e) => {
+    const target = e.target.id;
+    setToDos((currentArray) =>
+      currentArray.filter((item) => {
+        return item !== target;
+      })
+    );
   };
   return (
     <div>
+      <h1>My To Dos ({toDos.length})</h1>
       <form onSubmit={onSubmit}>
         <input
           onChange={onChange}
@@ -25,6 +31,15 @@ const App = (props) => {
         />
         <button>Add To Do</button>
       </form>
+      <hr />
+      {toDos.map((item, index) => (
+        <div key={index}>
+          <li>{item}</li>
+          <button id={item} onClick={deleteClick}>
+            x
+          </button>
+        </div>
+      ))}
     </div>
   );
 };

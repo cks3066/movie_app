@@ -2,44 +2,27 @@ import React from "react";
 import "./App.css";
 
 const App = (props) => {
-  const [toDo, setToDo] = React.useState("");
-  const [toDos, setToDos] = React.useState([]);
-  const onChange = (e) => setToDo(e.target.value);
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (toDo === "") return;
-    setToDos((currentArray) => [toDo, ...currentArray]);
-    setToDo("");
-  };
-  const deleteClick = (e) => {
-    const target = e.target.id;
-    setToDos((currentArray) =>
-      currentArray.filter((item) => {
-        return item !== target;
-      })
-    );
-  };
+  const [loading, setLoading] = React.useState(true);
+  const [coins, setCoins] = React.useState([]);
+  React.useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      });
+  }, []);
   return (
     <div>
-      <h1>My To Dos ({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={toDo}
-          type="text"
-          placeholder="Write your to do..."
-        />
-        <button>Add To Do</button>
-      </form>
-      <hr />
-      {toDos.map((item, index) => (
-        <div key={index}>
-          <li>{item}</li>
-          <button id={item} onClick={deleteClick}>
-            x
-          </button>
-        </div>
-      ))}
+      <h1>The Coins! ({coins.length})</h1>
+      {loading ? <strong>Loading...</strong> : null}
+      <ul>
+        {coins.map((item) => (
+          <li key={item.id}>
+            {item.name} ({item.symbol}) : {item.quotes.USD.price} USD
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,19 +1,46 @@
 import React from "react";
-import { HashRouter, Route } from "react-router-dom";
-import About from "./routes/About";
-import Home from "./routes/Home";
-import Detail from "./routes/Detail";
-import Navigation from "./components/Navigation";
 import "./App.css";
 
 const App = (props) => {
+  const [toDo, setToDo] = React.useState("");
+  const [toDos, setToDos] = React.useState([]);
+  const onChange = (e) => setToDo(e.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (toDo === "") return;
+    setToDos((currentArray) => [toDo, ...currentArray]);
+    setToDo("");
+  };
+  const deleteClick = (e) => {
+    const target = e.target.id;
+    setToDos((currentArray) =>
+      currentArray.filter((item) => {
+        return item !== target;
+      })
+    );
+  };
   return (
-    <HashRouter>
-      <Navigation />
-      <Route exact path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/movie/:id" component={Detail} />
-    </HashRouter>
+    <div>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+      </form>
+      <hr />
+      {toDos.map((item, index) => (
+        <div key={index}>
+          <li>{item}</li>
+          <button id={item} onClick={deleteClick}>
+            x
+          </button>
+        </div>
+      ))}
+    </div>
   );
 };
 

@@ -1,30 +1,21 @@
 import React from "react";
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Detail from "./routes/Detail";
+import Home from "./routes/Home";
 
-const App = (props) => {
-  const [loading, setLoading] = React.useState(true);
-  const [coins, setCoins] = React.useState([]);
-  React.useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
-      .then((response) => response.json())
-      .then((json) => {
-        setCoins(json);
-        setLoading(false);
-      });
-  }, []);
+function App() {
   return (
-    <div>
-      <h1>The Coins! ({coins.length})</h1>
-      {loading ? <strong>Loading...</strong> : null}
-      <ul>
-        {coins.map((item) => (
-          <li key={item.id}>
-            {item.name} ({item.symbol}) : {item.quotes.USD.price} USD
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/movie">
+          <Detail />
+        </Route>
+      </Switch>
+    </Router>
   );
-};
+}
 
 export default App;

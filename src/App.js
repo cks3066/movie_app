@@ -10,7 +10,7 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/movie/:id">
+        <Route exact path="/movie/:id">
           <Detail />
         </Route>
       </Switch>

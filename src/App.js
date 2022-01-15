@@ -7,10 +7,10 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
+        <Route basename={process.env.PUBLIC_URL} exact path="/">
           <Home />
         </Route>
-        <Route path="/movie/:id">
+        <Route basename={process.env.PUBLIC_URL} exact path="/movie/:id">
           <Detail />
         </Route>
       </Switch>

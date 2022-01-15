@@ -1,9 +1,9 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Movie from "../components/Movie";
 
-const Home = (props) => {
-  const [loading, setLoading] = React.useState(true);
-  const [movies, setMovies] = React.useState([]);
+function Home() {
+  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
   const getMovies = async () => {
     const json = await (
       await fetch(
@@ -13,7 +13,7 @@ const Home = (props) => {
     setMovies(json.data.movies);
     setLoading(false);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     getMovies();
   }, []);
   return (
@@ -25,6 +25,7 @@ const Home = (props) => {
           {movies.map((movie) => (
             <Movie
               key={movie.id}
+              id={movie.id}
               coverImg={movie.medium_cover_image}
               title={movie.title}
               summary={movie.summary}
@@ -35,6 +36,5 @@ const Home = (props) => {
       )}
     </div>
   );
-};
-
+}
 export default Home;
